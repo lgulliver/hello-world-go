@@ -15,7 +15,7 @@ type Welcome struct {
 
 func main() {
 	welcome := Welcome{"Anonymous", time.Now().Format(time.Stamp)}
-	templates := template.Must(template.ParseFiles("template/welcome-template.html"))
+	templates := template.Must(template.ParseFiles("templates/welcome-template.html"))
 
 	http.Handle("/static/",
 		http.StripPrefix("/static",

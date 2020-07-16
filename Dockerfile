@@ -1,7 +1,7 @@
 FROM golang:alpine AS build-env
 WORKDIR /go/src
 COPY . /go/src/welcome-app
-RUN cd /go/src/welcome-app && go build . && ls
+RUN cd /go/src/welcome-app && go build .
 
 FROM alpine
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk*
