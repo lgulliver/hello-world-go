@@ -12,7 +12,7 @@ on:
 
 env:
   BuildNumber: ${{ github.run_id }}-${{ github.run_number }}
-  ImageName: 'liamgu/hello-world-go'
+  ImageName: 'lgulliver/hello-world-go/helloworld'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
