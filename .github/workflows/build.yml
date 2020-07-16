@@ -26,13 +26,13 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    - name: Build Docker image
+    - name: Build Docker and push image
       uses: docker/build-push-action@v1.1.0
       with:
         # Username used to log in to a Docker registry. If not set then no login will occur
-        username: ${{ secrets.DockerHubUser }}
+        username: ${{ github.actor }}
         # Password or personal access token used to log in to a Docker registry. If not set then no login will occur
-        password: ${{ secrets.DockerHubPassword }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
         repository: ${{ env.ImageName }}        
-        tags: ${{ env.BuildNumber }}        
-        push: false
+        tags: ${{ env.BuildNumber }}
