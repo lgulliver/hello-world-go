@@ -6,26 +6,51 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
+stages:
+- stage: Build
+  jobs:
+  - job: Build
 
-steps:
-- task: Go@0
-  inputs:
-    command: 'build'
-    arguments: '.'
+    pool:
+      vmImage: 'ubuntu-latest'
 
-- task: CopyFiles@2
-  inputs:
-    Contents: |
-      **/infrastructure/**
-      **/static/**
-      **/templates/**
-      **/hello-world-go
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    steps:
+    - task: Go@0
+      inputs:
+        command: 'build'
+        arguments: '.'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    - task: CopyFiles@2
+      inputs:
+        Contents: |
+          **/infrastructure/**
+          **/static/**
+          **/templates/**
+          **/hello-world-go
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+
+#- stage: dev
+#  jobs:
+#  - job: deploy
+
+    # pool:
+    #   vmImage: 'ubuntu-latest'
+
+    # steps:
+    # - task: AzureResourceManagerTemplateDeployment@3
+    #   inputs:
+    #     deploymentScope: 'Resource Group'
+    #     azureResourceManagerConnection: 'Visual Studio Sub'
+    #     subscriptionId: '78dc32e4-16a1-41ee-8ad3-7f1e0007ee84'
+    #     action: 'Create Or Update Resource Group'
+    #     resourceGroupName: 'go-in-azure-rg'
+    #     location: 'UK South'
+    #     templateLocation: 'Linked artifact'
+    #     csmFile: 'somefile.json'
+    #     deploymentMode: 'Incremental'
