@@ -18,9 +18,9 @@ steps:
 - task: CopyFiles@2
   inputs:
     Contents: |
-      **/infrastructure
-      **/static
-      **/templates
+      **/infrastructure/*
+      **/static/*
+      **/templates/*
       **/hello-world-go
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
