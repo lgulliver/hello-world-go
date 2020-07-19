@@ -1,0 +1,62 @@
+name: Deployment ARM
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+    - infrastructure/arm/* 
+  pull_request:
+    branches: [ master ]       
+    
+jobs:
+  build:
+     runs-on: ubuntu-latest
+            
+     steps:
+     - uses: actions/checkout@v2
+     
+     - name: Setup Go environment
+       uses: actions/setup-go@v2.1.0
+    
+     - name: Build app
+       run: go build . 
+
+     - name: Upload build output
+       uses: actions/upload-artifact@v2
+       with:
+         name: hello-world-app
+         path: |
+           hello-world-go
+           static/**
+           templates/**
+           infrastructure/arm/**
+  dev:    
+    runs-on: ubuntu-latest
+
+    steps:
+    - env: 
+        resource_group_name: helloworldgo-rg
+        site_name: helloworldgolg
+        sku_tier: Free
+        sku_name: F1    
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: hello-world-app
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+    - name: Deploy ARM Template
+      uses: Azure/cli@v1.0.0      
+      with:
+        inlineScript: |
+          az deployment group create -g ${{ env.resource_group_name }} -f infrastructure/arm/webapp-with-golang.deploy.json -p siteName='${{ env.site_name }}' skuTier='${{ env.sku_tier }}' skuName='${{ env.sku_name }}'
+
+    - name: Deploy to Azure WebApp
+      uses: Azure/webapps-deploy@v2
+      with:        
+        app-name: ${{ env.site_name }}
