@@ -3,8 +3,6 @@ name: Deployment ARM
 on:
   push:
     branches: [ master ]
-    paths:
-    - infrastructure/arm/* 
   pull_request:
     branches: [ master ]       
     
