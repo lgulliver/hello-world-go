@@ -35,6 +35,7 @@ jobs:
       site_name: helloworldgolg
       sku_tier: Free
       sku_name: F1   
+      app_service_plan_name: ${{ env.site_name }}-plan
         
     steps:     
     - name: Download build artifacts
@@ -51,7 +52,7 @@ jobs:
       uses: Azure/cli@v1.0.0      
       with:
         inlineScript: |
-          az deployment group create -g ${{ env.resource_group_name }} -f infrastructure/arm/webapp-with-golang.deploy.json -p siteName='${{ env.site_name }}' skuTier='${{ env.sku_tier }}' skuName='${{ env.sku_name }}'
+          az deployment group create -g ${{ env.resource_group_name }} -f infrastructure/arm/webapp-with-golang.deploy.json -p siteName='${{ env.site_name }}' skuTier='${{ env.sku_tier }}' skuName='${{ env.sku_name }}' appServicePlanName='${{ env.app_service_plan_name }}'
 
     - name: Deploy to Azure WebApp
       uses: Azure/webapps-deploy@v2
