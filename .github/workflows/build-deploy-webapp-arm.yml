@@ -35,7 +35,7 @@ jobs:
       site_name: helloworldgolg
       sku_tier: Free
       sku_name: F1   
-      app_service_plan_name: ${{ env.site_name }}-plan
+      app_service_plan_name: helloworldgolg-plan
         
     steps:     
     - name: Download build artifacts
