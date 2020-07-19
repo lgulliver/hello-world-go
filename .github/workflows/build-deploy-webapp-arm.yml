@@ -29,7 +29,8 @@ jobs:
            templates/**
            infrastructure/arm/**
   dev:    
-    runs-on: ubuntu-latest
+    needs: build
+    runs-on: ubuntu-latest    
     env: 
       resource_group_name: helloworldgo-rg
       site_name: helloworldgolg
